@@ -1,6 +1,6 @@
 {
   "name": "mist-backend",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "mist-backend",
   "main": "app.js",
   "scripts": {
