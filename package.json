@@ -1,0 +1,22 @@
+{
+  "name": "mist-backend",
+  "version": "0.0.0",
+  "description": "mist-backend",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Weaver17/Mist-backend.git"
+  },
+  "author": "Andrew Weaver",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Weaver17/Mist-backend/issues"
+  },
+  "homepage": "https://github.com/Weaver17/Mist-backend#readme",
+  "dependencies": {
+    "express": "^4.21.1"
+  }
+}
