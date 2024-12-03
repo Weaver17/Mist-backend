@@ -12,7 +12,7 @@ const { requestLogger, errorLogger } = require("./middlewares/logger");
 
 const router = require("./routes/index");
 
-const { PORT = 3003 } = process.env;
+const { PORT = 3002 } = process.env;
 const app = express();
 
 mongoose
