@@ -15,11 +15,12 @@ router.use(auth);
 // POST /api/favorites – Adds a game to favorites.
 router.post("/", async (req, res) => {
   try {
-    req.body.userId = req.user.id;
-    const favorite = await addFavorite(req.user.id, req.body);
+    req.body.userId = req.user._id;
+    const favorite = await addFavorite(req);
     console.log(favorite);
     res.status(201);
   } catch (error) {
+    console.log(req.body);
     res.status(500).json({ error: "Failed to add favorite" });
   }
 });
@@ -27,7 +28,7 @@ router.post("/", async (req, res) => {
 // DELETE /api/favorites/:id – Removes a game from favorites
 router.delete("/:id", async (req, res) => {
   try {
-    await deleteFavorite(req.user.id, req.params.id);
+    await deleteFavorite(req.user._id, req.body.gameId);
     res.status(204).send();
   } catch (error) {
     res.status(500).json({ error: "Failed to delete favorite" });
@@ -37,7 +38,7 @@ router.delete("/:id", async (req, res) => {
 // GET /api/favorites – Fetches all favorite games.
 router.get("/", async (req, res) => {
   try {
-    const favorites = await getUserFavorites(req.user.id);
+    const favorites = await getUserFavorites(req.user._id);
     res.status(200).json(favorites);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch favorites" });
