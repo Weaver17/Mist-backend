@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const favoriteSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   //   userId: { type: String, required: true },
-  gameId: { type: String, required: true }, // ID from the 3rd party API
+  id: { type: Number, required: true }, // ID from the 3rd party API
   title: { type: String, required: true },
   thumbnail: { type: String, required: true },
   short_description: { type: String, required: true },

@@ -12,28 +12,49 @@ const getUserSaved = async (userId) => {
 };
 
 // Add a favorite for the authenticated user
-const addSaved = async (userId, savedData) => {
+const addSaved = async (req, res) => {
+  const savedData = req.body;
+  const userId = req.user._id;
   try {
-    const existingSavedGame = await Saved.findOne({
-      userId,
-      gameId: savedData.gameId,
+    const existingSaved = await Saved.findOne({
+      userId: userId,
+      id: savedData.id,
+      title: savedData.title,
+      thumbnail: savedData.thumbnail,
+      short_description: savedData.short_description,
+      game_url: savedData.game_url,
+      genre: savedData.genre,
+      platform: savedData.platform,
+      publisher: savedData.publisher,
+      developer: savedData.developer,
+      release_date: savedData.release_date,
+      freetogame_profile_url: savedData.freetogame_profile_url,
     });
 
-    if (existingSavedGame) {
-      throw new Error("Game is already in your saved games");
+    if (existingSaved) {
+      throw new Error("Game is already in your saved");
     }
 
     const newSaved = new Saved({
-      userId,
-      gameId: savedData.gameId,
+      userId: userId,
+      id: savedData.id,
       title: savedData.title,
+      thumbnail: savedData.thumbnail,
+      short_description: savedData.short_description,
+      game_url: savedData.game_url,
+      genre: savedData.genre,
+      platform: savedData.platform,
+      publisher: savedData.publisher,
+      developer: savedData.developer,
+      release_date: savedData.release_date,
+      freetogame_profile_url: savedData.freetogame_profile_url,
     });
 
     await newSaved.save();
     return newSaved;
   } catch (error) {
-    console.error("Error adding saved game:", error);
-    throw new Error("Could not add saved game");
+    console.error("Error adding saved:", error);
+    throw new Error("Could not add saved");
   }
 };
 

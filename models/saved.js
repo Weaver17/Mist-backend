@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 
 const savedSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true },
-  gameId: { type: String, required: true }, // ID from the 3rd party API
-  title: { type: Number, required: true },
+  id: { type: Number, required: true }, // ID from the 3rd party API
+  title: { type: String, required: true },
   thumbnail: { type: String, required: true },
   short_description: { type: String, required: true },
   game_url: { type: String, required: true },

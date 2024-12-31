@@ -28,7 +28,7 @@ router.post("/", async (req, res) => {
 // DELETE /api/favorites/:id – Removes a game from favorites
 router.delete("/:id", async (req, res) => {
   try {
-    await deleteFavorite(req.user._id, req.body.gameId);
+    await deleteFavorite(req.user._id, req.body._id);
     res.status(204).send();
   } catch (error) {
     res.status(500).json({ error: "Failed to delete favorite" });

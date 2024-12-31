@@ -21,20 +21,9 @@ const addFavorite = async (req, res) => {
   const favoriteData = req.body;
   const userId = req.user._id;
   try {
-    const existingFavorite = await Favorite.findOne({
-      userId: userId,
-      gameId: favoriteData.gameId,
-      title: favoriteData.title,
-      thumbnail: favoriteData.thumbnail,
-      short_description: favoriteData.short_description,
-      game_url: favoriteData.game_url,
-      genre: favoriteData.genre,
-      platform: favoriteData.platform,
-      publisher: favoriteData.publisher,
-      developer: favoriteData.developer,
-      release_date: favoriteData.release_date,
-      freetogame_profile_url: favoriteData.freetogame_profile_url,
-    });
+    const existingFavorite = await Favorite.findById(favoriteData.id).orFail(
+      () => new NotFoundError("Item not found")
+    );
 
     if (existingFavorite) {
       throw new Error("Game is already in your favorites");
@@ -42,7 +31,7 @@ const addFavorite = async (req, res) => {
 
     const newFavorite = new Favorite({
       userId: userId,
-      gameId: favoriteData.gameId,
+      id: favoriteData.id,
       title: favoriteData.title,
       thumbnail: favoriteData.thumbnail,
       short_description: favoriteData.short_description,
@@ -66,8 +55,8 @@ const addFavorite = async (req, res) => {
 // Delete a favorite for the authenticated user
 const deleteFavorite = async (userId, favoriteId) => {
   try {
-    const favorite = await Favorite.findOneAndDelete({
-      gameId: favoriteId,
+    const favorite = await Favorite.findByIdAndDelete({
+      _id: favoriteId,
       userId,
     });
 

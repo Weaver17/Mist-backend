@@ -15,10 +15,13 @@ router.use(auth);
 // POST /api/saved-games – Adds a game to saved games.
 router.post("/", async (req, res) => {
   try {
-    const favorite = await addSaved(req.user.id, req.body);
-    res.status(201).json(favorite);
+    req.body.userId = req.user._id;
+    const saved = await addSaved(req);
+    console.log(saved);
+    res.status(201);
   } catch (error) {
-    res.status(500).json({ error: "Failed to add saved game" });
+    console.log(req.body);
+    res.status(500).json({ error: "Failed to add saved" });
   }
 });
 
@@ -35,10 +38,10 @@ router.delete("/:id", async (req, res) => {
 // GET /api/saved-games – Fetches all saved games.
 router.get("/", async (req, res) => {
   try {
-    const favorites = await getUserSaved(req.user.id);
-    res.status(200).json(favorites);
+    const saved = await getUserSaved(req.user._id);
+    res.status(200).json(saved);
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch saved game" });
+    res.status(500).json({ error: "Failed to fetch saved games" });
   }
 });
 
