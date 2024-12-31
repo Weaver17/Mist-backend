@@ -20,14 +20,22 @@ const getUserFavorites = async (userId) => {
 const addFavorite = async (req, res) => {
   const favoriteData = req.body;
   const userId = req.user._id;
+  const gameId = req.body.id;
   try {
-    const existingFavorite = await Favorite.findById(favoriteData.id).orFail(
-      () => new NotFoundError("Item not found")
-    );
+    // const existingFavorite = await Favorite.findOne(gameId).orFail(
+    //   new NotFoundError("Item not found")
+    // );
 
-    if (existingFavorite) {
-      throw new Error("Game is already in your favorites");
-    }
+    // if (existingFavorite) {
+    //   throw new Error("Game is already in your favorites");
+    // }
+
+    Favorite.findOne({ gameId }).then((game) => {
+      if (game) {
+        throw new ConflictError("Game already in your favorites");
+      }
+      return game;
+    });
 
     const newFavorite = new Favorite({
       userId: userId,
