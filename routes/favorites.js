@@ -16,6 +16,7 @@ router.use(auth);
 router.post("/", async (req, res) => {
   try {
     req.body.userId = req.user._id;
+
     const favorite = await addFavorite(req);
     console.log(favorite);
     res.status(201);
