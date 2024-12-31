@@ -1,86 +1,86 @@
-const Favorite = require("../models/favorites");
+// const Favorite = require("../models/favorites");
 
-const BadRequestError = require("../errors/BadRequestError");
-const ConflictError = require("../errors/ConflictError");
-const NotFoundError = require("../errors/NotFoundError");
-const UnauthorizedError = require("../errors/UnauthorizedError");
+// const BadRequestError = require("../errors/BadRequestError");
+// const ConflictError = require("../errors/ConflictError");
+// const NotFoundError = require("../errors/NotFoundError");
+// const UnauthorizedError = require("../errors/UnauthorizedError");
 
-// Fetch all favorites for the authenticated user
-const getUserFavorites = async (userId) => {
-  try {
-    const favorites = await Favorite.find({ userId }).sort({ createdAt: -1 });
-    return favorites;
-  } catch (error) {
-    console.error("Error fetching favorites:", error);
-    throw new Error("Could not fetch favorites");
-  }
-};
+// // Fetch all favorites for the authenticated user
+// const getUserFavorites = async (userId) => {
+//   try {
+//     const favorites = await Favorite.find({ userId }).sort({ createdAt: -1 });
+//     return favorites;
+//   } catch (error) {
+//     console.error("Error fetching favorites:", error);
+//     throw new Error("Could not fetch favorites");
+//   }
+// };
 
-// Add a favorite for the authenticated user
-const addFavorite = async (req, res) => {
-  const favoriteData = req.body;
-  const userId = req.user._id;
-  const gameId = req.body.id;
-  try {
-    // const existingFavorite = await Favorite.findOne(gameId).orFail(
-    //   new NotFoundError("Item not found")
-    // );
+// // Add a favorite for the authenticated user
+// const addFavorite = async (req, res) => {
+//   const favoriteData = req.body;
+//   const userId = req.user._id;
+//   const gameId = req.body.id;
+//   try {
+//     // const existingFavorite = await Favorite.findOne(gameId).orFail(
+//     //   new NotFoundError("Item not found")
+//     // );
 
-    // if (existingFavorite) {
-    //   throw new Error("Game is already in your favorites");
-    // }
+//     // if (existingFavorite) {
+//     //   throw new Error("Game is already in your favorites");
+//     // }
 
-    Favorite.findOne({ gameId }).then((game) => {
-      if (game) {
-        throw new ConflictError("Game already in your favorites");
-      }
-      return game;
-    });
+//     Favorite.findOne({ gameId }).then((game) => {
+//       if (game) {
+//         throw new ConflictError("Game already in your favorites");
+//       }
+//       return game;
+//     });
 
-    const newFavorite = new Favorite({
-      userId: userId,
-      id: favoriteData.id,
-      title: favoriteData.title,
-      thumbnail: favoriteData.thumbnail,
-      short_description: favoriteData.short_description,
-      game_url: favoriteData.game_url,
-      genre: favoriteData.genre,
-      platform: favoriteData.platform,
-      publisher: favoriteData.publisher,
-      developer: favoriteData.developer,
-      release_date: favoriteData.release_date,
-      freetogame_profile_url: favoriteData.freetogame_profile_url,
-    });
+//     const newFavorite = new Favorite({
+//       userId: userId,
+//       id: favoriteData.id,
+//       title: favoriteData.title,
+//       thumbnail: favoriteData.thumbnail,
+//       short_description: favoriteData.short_description,
+//       game_url: favoriteData.game_url,
+//       genre: favoriteData.genre,
+//       platform: favoriteData.platform,
+//       publisher: favoriteData.publisher,
+//       developer: favoriteData.developer,
+//       release_date: favoriteData.release_date,
+//       freetogame_profile_url: favoriteData.freetogame_profile_url,
+//     });
 
-    await newFavorite.save();
-    return newFavorite;
-  } catch (error) {
-    console.error("Error adding favorite:", error);
-    throw new Error("Could not add favorite");
-  }
-};
+//     await newFavorite.save();
+//     return newFavorite;
+//   } catch (error) {
+//     console.error("Error adding favorite:", error);
+//     throw new Error("Could not add favorite");
+//   }
+// };
 
-// Delete a favorite for the authenticated user
-const deleteFavorite = async (userId, favoriteId) => {
-  try {
-    const favorite = await Favorite.findByIdAndDelete({
-      _id: favoriteId,
-      userId,
-    });
+// // Delete a favorite for the authenticated user
+// const deleteFavorite = async (userId, favoriteId) => {
+//   try {
+//     const favorite = await Favorite.findByIdAndDelete({
+//       _id: favoriteId,
+//       userId,
+//     });
 
-    if (!favorite) {
-      throw new Error("Favorite not found or does not belong to the user");
-    }
+//     if (!favorite) {
+//       throw new Error("Favorite not found or does not belong to the user");
+//     }
 
-    return favorite;
-  } catch (error) {
-    console.error("Error deleting favorite:", error);
-    throw new Error("Could not delete favorite");
-  }
-};
+//     return favorite;
+//   } catch (error) {
+//     console.error("Error deleting favorite:", error);
+//     throw new Error("Could not delete favorite");
+//   }
+// };
 
-module.exports = {
-  getUserFavorites,
-  addFavorite,
-  deleteFavorite,
-};
+// module.exports = {
+//   getUserFavorites,
+//   addFavorite,
+//   deleteFavorite,
+// };
