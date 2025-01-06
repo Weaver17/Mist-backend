@@ -4,6 +4,10 @@ require("dotenv").config();
 
 const mongoose = require("mongoose");
 
+const helmet = require("helmet");
+
+const limiter = require("./utils/rateLimit");
+
 const cors = require("cors");
 
 const { errors } = require("celebrate");
@@ -25,8 +29,10 @@ mongoose
   .catch(console.error);
 
 app.use(express.json());
+app.use(helmet());
 app.use(cors());
 app.use(requestLogger);
+app.use(limiter);
 app.use("/", router);
 app.use(errorLogger);
 app.use(errors());
