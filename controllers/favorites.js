@@ -1,3 +1,74 @@
+const Favorite = require("../models/favorites");
+
+const getUserFavorites = async (userId) => {
+  try {
+    const favorites = await Favorite.find({ userId }).sort({ createdAt: -1 });
+    return favorites;
+  } catch (error) {
+    console.error("Error fetching favorites:", error);
+    throw new Error("Could not fetch favorites");
+  }
+};
+
+const addFavorite = async (req, res) => {
+  const favoriteData = req.body;
+  const userId = req.user._id;
+  try {
+    const existingFavorite = await Favorite.findOne({
+      userId: userId,
+      id: favoriteData.id,
+    });
+
+    if (existingFavorite) {
+      throw new Error("Game is already in your favorites");
+    }
+
+    const newFavorite = new Favorite({
+      userId: userId,
+      title: favoriteData.title,
+      thumbnail: favoriteData.thumbnail,
+      short_description: favoriteData.short_description,
+      game_url: favoriteData.game_url,
+      genre: favoriteData.genre,
+      platform: favoriteData.platform,
+      publisher: favoriteData.publisher,
+      developer: favoriteData.developer,
+      release_date: favoriteData.release_date,
+      freetogame_profile_url: favoriteData.freetogame_profile_url,
+    });
+
+    await newFavorite.save();
+    return newFavorite;
+  } catch (error) {
+    console.error("Error adding favorite:", error);
+    throw new Error("Could not add favorite");
+  }
+};
+
+const deleteFavorite = async (userId, favoriteId) => {
+  try {
+    const favorite = await Favorite.findOneAndDelete({
+      _id: favoriteId,
+      userId,
+    });
+
+    if (!favorite) {
+      throw new Error("Favorite not found or does not belong to the user");
+    }
+
+    return favorite;
+  } catch (error) {
+    console.error("Error deleting favorite:", error);
+    throw new Error("Could not delete favorite");
+  }
+};
+
+module.exports = {
+  getUserFavorites,
+  addFavorite,
+  deleteFavorite,
+};
+
 // const Favorite = require("../models/favorites");
 
 // const BadRequestError = require("../errors/BadRequestError");

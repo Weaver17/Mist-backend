@@ -14,7 +14,7 @@ const favoriteSchema = new mongoose.Schema({
   developer: { type: String, required: true },
   release_date: { type: String, required: true },
   freetogame_profile_url: { type: String, required: true },
-  //   createdAt: { type: Date, default: Date.now },
+  createdAt: { type: Date, default: Date.now },
 });
 
 module.exports = mongoose.model("Favorite", favoriteSchema);

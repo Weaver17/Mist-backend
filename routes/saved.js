@@ -17,18 +17,16 @@ router.post("/", async (req, res) => {
   try {
     req.body.userId = req.user._id;
     const saved = await addSaved(req);
-    console.log(saved);
-    res.status(201);
+    res.status(201).json(saved);
   } catch (error) {
-    console.log(req.body);
-    res.status(500).json({ error: "Failed to add saved" });
+    res.status(500).json({ error: "Failed to add saved game" });
   }
 });
 
 // DELETE /api/saved-games/:id – Removes a game from saved games.
 router.delete("/:id", async (req, res) => {
   try {
-    await deleteSavedGame(req.user.id, req.params.id);
+    await deleteSavedGame(req.user._id, req.params.id);
     res.status(204).send();
   } catch (error) {
     res.status(500).json({ error: "Failed to delete saved game" });
