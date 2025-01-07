@@ -6,8 +6,6 @@ const mongoose = require("mongoose");
 
 const helmet = require("helmet");
 
-const limiter = require("./utils/rateLimit");
-
 const cors = require("cors");
 
 const { errors } = require("celebrate");
@@ -17,6 +15,8 @@ const errorHandler = require("./middlewares/errorHandler");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
 
 const router = require("./routes/index");
+
+const limiter = require("./utils/rateLimit");
 
 const { PORT = 3002 } = process.env;
 const app = express();
