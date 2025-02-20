@@ -15,16 +15,13 @@ const UnauthorizedError = require("../errors/UnauthorizedError");
 
 // POST USERS
 const createUser = (req, res, next) => {
-  const { username, email, password, confirm } = req.body;
+  const { username, email, password } = req.body;
 
   if (!email) {
     return next(new BadRequestError("Email required"));
   }
   if (!validator.isEmail(email)) {
     return next(new BadRequestError("Invalid Email"));
-  }
-  if (password !== confirm) {
-    return next(new BadRequestError("Passwords must match"));
   }
 
   return User.findOne({ email })

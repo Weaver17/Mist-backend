@@ -28,11 +28,6 @@ const userSchema = new mongoose.Schema({
     required: [true, "The password field is required"],
     select: false,
   },
-  //   confirm: {
-  //     type: String,
-  //     required: [true, "Please confirm password"],
-  //     select: false,
-  //   },
 });
 
 userSchema.statics.findUserByCredentials = function findUserByCredentials(

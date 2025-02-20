@@ -25,9 +25,6 @@ const validateUserBody = celebrate({
     password: Joi.string().required().messages({
       "string-empty": "Password field is required",
     }),
-    confirm: Joi.string().required().messages({
-      "string-empty": "Password field is required",
-    }),
   }),
 });
 
