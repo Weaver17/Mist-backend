@@ -41,4 +41,16 @@ const favoriteSchema = new mongoose.Schema({
   },
 });
 
+favoriteSchema.statics.findMongoIdByApiId = function findMongoIdByApiId(id) {
+  return this.findOne({ id })
+    .select("_id")
+    .then((game) => {
+      console.log(id);
+      if (!game) {
+        return Promise.reject(new Error("Game not found"));
+      }
+      return game;
+    });
+};
+
 module.exports = mongoose.model("favorite", favoriteSchema);
