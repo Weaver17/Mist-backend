@@ -1,11 +1,11 @@
-const Favorite = require("../models/favoriteModel");
+const Saved = require("../models/SavedModel");
 const ConflictError = require("../errors/ConflictError");
 const NotFoundError = require("../errors/NotFoundError");
 const UnauthorizedError = require("../errors/UnauthorizedError");
 const BadRequestError = require("../errors/BadRequestError");
 
-// FAVORITE GAME
-const favoriteGame = async (req, res, next) => {
+// SAVE GAME
+const saveGame = async (req, res, next) => {
   try {
     const {
       developer,
@@ -21,7 +21,7 @@ const favoriteGame = async (req, res, next) => {
       title,
     } = req.body;
 
-    const favoritedGame = new Favorite({
+    const savedGame = new Saved({
       developer,
       freetogame_profile_url,
       game_url,
@@ -36,9 +36,9 @@ const favoriteGame = async (req, res, next) => {
       user: req.user._id,
     });
 
-    await favoritedGame.save();
+    await savedGame.save();
 
-    res.status(200).json(favoritedGame);
+    res.status(200).json(savedGame);
   } catch (e) {
     console.error(e);
     if (e instanceof ConflictError) {
@@ -52,7 +52,7 @@ const favoriteGame = async (req, res, next) => {
   }
 };
 
-const getFavoritedGames = async (req, res, next) => {
+const getSavedGames = async (req, res, next) => {
   try {
     const userId = req.user._id;
 
@@ -60,10 +60,10 @@ const getFavoritedGames = async (req, res, next) => {
       throw new NotFoundError("User not found!");
     }
 
-    const favoritedGames = await Favorite.find({ user: userId });
+    const savedGames = await Saved.find({ user: userId });
 
     res.status(200).json({
-      favoritedGames,
+      savedGames,
     });
   } catch (e) {
     console.error(e);
@@ -78,7 +78,7 @@ const getFavoritedGames = async (req, res, next) => {
   }
 };
 
-const getFavorite = async (req, res, next) => {
+const getSaved = async (req, res, next) => {
   try {
     const { id } = req.params;
     const apiId = parseInt(req.params.id, 10);
@@ -87,10 +87,10 @@ const getFavorite = async (req, res, next) => {
       throw new BadRequestError("Invalid Id");
     }
 
-    const mongoId = await Favorite.findMongoIdByApiId(apiId);
+    const mongoId = await Saved.findMongoIdByApiId(apiId);
 
     if (!mongoId) {
-      throw new NotFoundError("Game not found in favorites");
+      throw new NotFoundError("Game not found in saved games");
     }
 
     res.json({ mongoId });
@@ -107,24 +107,24 @@ const getFavorite = async (req, res, next) => {
   }
 };
 
-const deleteFavoritedGame = async (req, res, next) => {
+const deleteSavedGame = async (req, res, next) => {
   try {
     const userId = req.user._id;
     const { id } = req.params;
 
-    const favoritedGame = await Favorite.findById(id);
+    const savedGame = await Saved.findById(id);
 
-    if (!favoritedGame) {
-      throw new NotFoundError("Game not found in favorites");
+    if (!savedGame) {
+      throw new NotFoundError("Game not found in saved games");
     }
 
-    if (!favoritedGame.user.equals(userId)) {
+    if (!savedGame.user.equals(userId)) {
       throw new UnauthorizedError("Access denied!");
     }
 
-    await Favorite.findByIdAndDelete(id);
+    await Saved.findByIdAndDelete(id);
 
-    res.status(200).json({ message: "Game removed from favorites" });
+    res.status(200).json({ message: "Game removed from saved games" });
   } catch (e) {
     console.error(e);
     if (e instanceof ConflictError) {
@@ -139,8 +139,8 @@ const deleteFavoritedGame = async (req, res, next) => {
 };
 
 module.exports = {
-  favoriteGame,
-  getFavoritedGames,
-  deleteFavoritedGame,
-  getFavorite,
+  saveGame,
+  getSavedGames,
+  deleteSavedGame,
+  getSaved,
 };

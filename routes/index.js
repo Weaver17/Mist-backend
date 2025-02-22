@@ -4,6 +4,8 @@ const userRouter = require("./users");
 
 const favoriteRouter = require("./favorites");
 
+const savedRouter = require("./saved");
+
 const NotFoundError = require("../errors/NotFoundError");
 
 const {
@@ -18,6 +20,7 @@ router.post("/signup", validateUserBody, createUser);
 router.post("/signin", validateLogin, login);
 
 router.use("/games", favoriteRouter);
+router.use("/games", savedRouter);
 
 router.use((req, res, next) => {
   next(new NotFoundError("Router not found"));
