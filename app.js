@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const express = require("express");
 
 require("dotenv").config();
@@ -22,11 +23,11 @@ const { PORT = 3002 } = process.env;
 const app = express();
 
 mongoose
-  .connect("mongodb://127.0.0.1:27017/MIST")
-  .then(() => {
-    console.log("Connected to DB");
-  })
-  .catch(console.error);
+    .connect("mongodb://127.0.0.1:27017/MIST")
+    .then(() => {
+        console.log("Connected to DB");
+    })
+    .catch(console.error);
 
 app.use(express.json());
 app.use(helmet());
@@ -39,5 +40,5 @@ app.use(errors());
 app.use(errorHandler);
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });
