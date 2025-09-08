@@ -19,11 +19,11 @@ const router = require("./routes/index");
 
 const limiter = require("./utils/rateLimit");
 
-const { PORT = 3002 } = process.env;
+const { PORT = 3002 } = process.env.ATLAS_MIST_URI;
 const app = express();
 
 mongoose
-    .connect("mongodb://127.0.0.1:27017/MIST")
+    .connect(process.env.ATLAS_MIST_URI)
     .then(() => {
         console.log("Connected to DB");
     })
